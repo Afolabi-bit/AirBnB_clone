@@ -9,11 +9,21 @@ class BaseModel():
         This class defines all common attributes/methods
         for other classes
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """insantiates the class"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+        if not (kwargs):
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
+        else:
+            for key, value in kwargs.items():
+                if key == "__class__":
+                    pass
+                else:
+                    if key == "created_at" or key == "updated_at":
+                        value = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                    setattr(self, key, value)
+
 
     def __str__(self):
         """String reprresentation of class"""
