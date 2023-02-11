@@ -2,7 +2,7 @@
 """This module defines the base model for our project"""
 import uuid
 import datetime
-from models import *
+from models import storage
 
 
 class BaseModel():
