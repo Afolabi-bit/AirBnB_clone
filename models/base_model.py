@@ -2,6 +2,7 @@
 """This module defines the base model for our project"""
 import uuid
 import datetime
+from models import *
 
 
 class BaseModel():
@@ -15,6 +16,7 @@ class BaseModel():
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
+            storage.new(self)
         else:
             for key, value in kwargs.items():
                 if key == "__class__":
@@ -35,6 +37,7 @@ class BaseModel():
             updated_at with the current datetime
         """
         updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
