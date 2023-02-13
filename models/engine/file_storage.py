@@ -21,6 +21,12 @@ class FileStorage():
         obj_cls_name = obj.__class__.__name__
         FileStorage.__objects["{}.{}".format(obj_cls_name, obj.id)] = obj 
 
+    def classes(self):
+        from models import BaseModel
+
+        classes = {"BaseModel": BaseModel}
+        return classes
+
     def save(self):
         """serializes __objects to the JSON file"""
         with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
@@ -31,5 +37,8 @@ class FileStorage():
         """Deserialize the JSON file __file_path to __objects, if it exists."""
         if os.path.isfile(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-                object_dict = json.loads(f.read())
-            FileStorage.__objects = object_dict
+                object_dict = json.load(f)
+            for o in object_dict.values():
+                cls_name = o["__class__"]
+                del o["__class__"]
+                self.new(eval(f"{cls_name}")(**o))

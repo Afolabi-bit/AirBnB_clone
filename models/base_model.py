@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """This module defines the base model for our project"""
 import uuid
-import datetime
-from models import storage
+from datetime import datetime
+import models
 
 
 class BaseModel():
@@ -11,44 +11,41 @@ class BaseModel():
         for other classes
     """
     def __init__(self, *args, **kwargs):
-        """insantiates the class"""
+        """instantiates the class"""
         if not (kwargs):
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
-            storage.new(self)
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            models.storage.new(self)
         else:
             for key, value in kwargs.items():
                 if key == "__class__":
-                    pass
+                    continue
+                elif key == "updated_at" or key == "created_at":
+                    self.__dict__[key] = datetime.fromisoformat(value)
                 else:
-                    if key == "created_at" or key == "updated_at":
-                        value = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
-                    setattr(self, key, value)
+                    self.__dict__[key] = value
 
 
     def __str__(self):
         """String reprresentation of class"""
-        return f'[BaseModel] ({self.id}) {self.__dict__}'
+        return f'[{self.__class__.__name__ ({self.id}) {self.__dict__}'
 
     def save(self):
         """
             updates the public instance attribute
             updated_at with the current datetime
         """
-        updated_at = datetime.datetime.now()
-        storage.save()
+        self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """
             returns a dict containing all
             key/values of __dict__ instance
         """
-        map_objects = {}
-        for key, value in self.__dict__.items():
-            if key == "created_at" or key == "updated_at":
-                map_objects[key] = value.isoformat()
-            else:
-                map_objects[key] = value
-        map_objects["__class__"] = self.__class__.__name__
-        return map_objects
+        my_dict = self.__dict__.copy()
+        my_dict["__class__"] = self.__class__..__name__
+        my_dict["created_at"] = my_dict["created_at"].isoformat()
+        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
+        return my_dict
