@@ -20,7 +20,7 @@ class FileStorage():
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         obj_cls_name = obj.__class__.__name__
-        self.__objects["{}.{}".format(obj_cls_name, obj.id)] = obj 
+        self.__objects["{}.{}".format(obj_cls_name, obj.id)] = obj
 
     def classes(self):
         from models import BaseModel
@@ -34,7 +34,7 @@ class FileStorage():
             d = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
             json.dump(d, f)
 
-    def reload(self):        
+    def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
         if os.path.isfile(self.__file_path):
             with open(self.__file_path, "r", encoding="utf-8") as f:

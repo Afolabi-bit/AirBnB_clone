@@ -26,7 +26,6 @@ class BaseModel():
                 else:
                     self.__dict__[key] = value
 
-
     def __str__(self):
         """String reprresentation of class"""
         return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
