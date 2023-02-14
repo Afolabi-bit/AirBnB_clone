@@ -66,8 +66,9 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in self.__classes:
             print("** class doesn't exist **")
         else:
-            one_class = [str(obj) for k, obj in storage.all().items() if k.startswith(args[0])]
-            print(one_class)
+            d = storage.all().items()
+            only = [str(o) for k, o in d if k.startswith(args[0])]
+            print(only)
 
     def do_update(self, line):
         """Updates an instance based on the class
@@ -81,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
-        elif f"{args[0]}.{args[1]}"  not in storage.all():
+        elif f"{args[0]}.{args[1]}" not in storage.all():
             print("** no instance found **")
         elif len(args) == 2:
             print("** attribute name missing **")
