@@ -14,8 +14,7 @@ class FileStorage():
 
     def classes(self):
         """Returns a dictionary of valid classes and their references"""
-        classes = {"BaseModel": BaseModel,
-                    "User": User}
+        classes = {"BaseModel": BaseModel}
         return classes
 
     def all(self):
@@ -28,7 +27,6 @@ class FileStorage():
         self.__objects["{}.{}".format(obj_cls_name, obj.id)] = obj
 
     def classes(self):
-        from models import BaseModel
 
         classes = {"BaseModel": BaseModel}
         return classes
