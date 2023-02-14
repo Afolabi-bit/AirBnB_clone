@@ -3,7 +3,6 @@
 import json
 import os
 from models import base_model
-from models import user
 
 class FileStorage():
     """
@@ -27,6 +26,12 @@ class FileStorage():
         """sets in __objects the obj with key <obj class name>.id"""
         obj_cls_name = obj.__class__.__name__
         self.__objects["{}.{}".format(obj_cls_name, obj.id)] = obj
+
+    def classes(self):
+        from models import BaseModel
+
+        classes = {"BaseModel": BaseModel}
+        return classes
 
     def save(self):
         """serializes __objects to the JSON file"""
