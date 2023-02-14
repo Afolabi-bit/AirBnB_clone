@@ -5,7 +5,6 @@ import os
 from models import base_model
 from models import user
 
-
 class FileStorage():
     """
         This file serializes instances to a
@@ -13,6 +12,12 @@ class FileStorage():
     """
     __file_path = "file.json"
     __objects = {}
+
+    def classes(self):
+        """Returns a dictionary of valid classes and their references"""
+        classes = {"BaseModel": BaseModel,
+                    "User": User}
+        return classes
 
     def all(self):
         """returns the dictionary __objects"""
